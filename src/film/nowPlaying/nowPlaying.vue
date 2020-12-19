@@ -1,5 +1,6 @@
 <template>
-  <ul class="box1"
+  <div class="box11">
+    <ul class="box1"
      v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
         infinite-scroll-distance="0"
@@ -22,6 +23,7 @@
     </li>
     <div class="big" v-if=iShow></div>
   </ul>
+  </div>
 </template>
 <script>
 import maizuo from '@/http/maizuo'
@@ -49,7 +51,7 @@ export default {
       duration: 0
     })
     maizuo({
-      url: `https://m.maizuo.com/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=1&k=2715269`,
+      url: `/api/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=1&k=2715269`,
       headers: {
         'X-Host': 'mall.film-ticket.film.list'
       }
@@ -96,7 +98,7 @@ export default {
         return this.loading = false
       }
       maizuo({
-        url: `https://m.maizuo.com/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.pageNum}&pageSize=10&type=1&k=2715269`,
+        url: `/api/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.pageNum}&pageSize=10&type=1&k=2715269`,
         headers: {
           'X-Host': 'mall.film-ticket.film.list'
         }
@@ -107,15 +109,11 @@ export default {
       })
     }
   }
-  /*  beforeRouteEnter(to,from,next) {
-    console.log('我的去向======>',to.path);
-    console.log('我的来源======>',from.path);
-    next()
-  } */
+ 
 }
 </script>
 
-<style lang='scss' >
+<style lang='scss' scoped>
   .box1{
     .imgbox{
       width: .66rem;
@@ -156,6 +154,7 @@ export default {
 
     }
     .box{
+
        padding: 10px;
        margin-bottom: .1rem;
        display: flex;
@@ -181,5 +180,8 @@ export default {
   }
   .big{
     height: .5rem;
+  }
+  .box11{
+    padding-top: .5rem;
   }
 </style>

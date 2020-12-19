@@ -2,18 +2,17 @@ var path = require('path')
 module.exports = {
   productionSourceMap: false,
   publicPath: "./",
-  /* devServer: {
-      proxy: {
-        "/api": {
-          target: "https://m.maizuo.com",
-          changeOrigin: true
-        },
-        // "/foo": {
-        //   target: "<other_url>"
-        // }
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "https://m.maizuo.com",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": ""
+        }
       }
-    // proxy: "https://m.maizuo.com/"
-  }, */
+    }
+  },
   configureWebpack: {
     resolve: {
       alias: {

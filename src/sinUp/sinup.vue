@@ -2,7 +2,7 @@
     <form>
       <div class='img'><img src='https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1500354034,3407188093&fm=26&gp=0.jpg' alt='图片记载失败'></div>
       <div><input type="text" v-model="username" placeholder="用户名"></div>
-      <div><input type="password" v-model="password" placeholder="密码"></div>
+      <div><input type="password" v-model="password" placeholder="密码" ></div>
       <div><input type="button" value="注册" @click='send'></div>
     </form>
 </template>
@@ -58,8 +58,6 @@ export default {
     }
   },
   beforeDestroy () {
-    // 让底部导航回来
-    // this.$store.commit('updateIsShow', true)
     this.updateIsShow(true)
   }
 }

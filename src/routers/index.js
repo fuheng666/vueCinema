@@ -28,6 +28,11 @@ var routes = [
     ]
   },
   {
+    path: "/msg",
+    component: () =>
+      import(/* webpackChunkName:'comingSoon' */ "../components/msg")
+  },
+  {
     path: "/city",
     component: () =>
       import(/* webpackChunkName:'comingSoon' */ "../cinema/city")

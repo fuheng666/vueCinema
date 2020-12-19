@@ -26,9 +26,10 @@ export default {
   data () {
     return {
       list: [
-        { id: 0, title: '电影', path: '/film' },
-        { id: 1, title: '影院', path: '/Cinema' },
-        { id: 2, title: '我的', path: '/Center' },
+        { id: 0, title: '电影', path: '/film' ,icon:"icon-dianying"},
+        { id: 1, title: '影院', path: '/Cinema',icon:'icon-yingyuan'},
+        { id: 2, title: '咨询', path: '/msg' ,icon:'icon-zixun'},
+        { id: 3, title: '我的', path: '/Center',icon:'icon-wode'},
       ]
     }
   }

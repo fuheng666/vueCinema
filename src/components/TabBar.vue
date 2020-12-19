@@ -1,6 +1,6 @@
 <template>
   <ul class="tabBar" v-if='isShow'>
-    <router-link :key='item.id' tag='li' :to='item.path' v-for='item in list'>{{item.title}}</router-link>
+    <router-link :key='item.id' tag='li' :to='item.path' v-for='item in list'><i :class="'iconfont'+' '+item.icon"></i><span>{{item.title}}</span></router-link>
   </ul>
 </template>
 <script>
@@ -13,15 +13,7 @@ export default {
   computed: {
     ...mapState('tabBarModule', ['isShow'])
   }
-  /*  data() {
-    return {
-      list: [
-        {id:0,title:'电影',path:'/Film'},
-        {id:1,title:'影院',path:'/Cinema'},
-        {id:2,title:'我的',path:'/Center'},
-      ]
-    }
-  } */
+ 
 }
 </script>
 
@@ -41,11 +33,20 @@ export default {
             list-style: none;
             flex:1;
             height: 100%;
-            line-height: 50px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+              color:#ccc;
+              
+            i{
+              font-size: .25rem;
+            }
+            span{
+              margin-top: .08rem;
+            }
           }
         }
         .router-link-active{
-          color: salmon;
+          color: salmon !important;
         }
 </style>

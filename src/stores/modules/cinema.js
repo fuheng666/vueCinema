@@ -62,9 +62,8 @@ var module = {
   actions: {
     // cinema
     getCinema (context) {
-      console.log();
       axios({
-        url: `https://m.maizuo.com/gateway?cityId=${this.state.cityId}&ticketFlag=1&k=6091309`,
+        url: `/api/gateway?cityId=${this.state.cityId}&ticketFlag=1&k=6091309`,
         headers: {
           "X-Client-Info":
             '{"a":"3000","ch":"1002","v":"5.0.4","e":"1607068294914046350000129","bc":"370200"}',

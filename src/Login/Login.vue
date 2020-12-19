@@ -2,7 +2,7 @@
     <form>
       <div class='img'><img src='https://assets.maizuo.com/h5/mz-auth/public/app/img/logo.19ca0be.png' alt='图片记载失败'></div>
       <div><input type="text" v-model="username" placeholder="用户名"></div>
-      <div><input type="password" v-model="password" placeholder="密码"></div>
+      <div><input type="password" v-model="password" placeholder="密码" autocomplete></div>
       <div><input type="button" value="登录" @click='send'></div>
       <p class="sinUp" @click="sinUp">立即注册</p>
     </form>
@@ -64,8 +64,6 @@ export default {
     }
   },
   beforeDestroy () {
-    // 让底部导航回来
-    // this.$store.commit('updateIsShow', true)
     this.updateIsShow(true)
   }
 }
