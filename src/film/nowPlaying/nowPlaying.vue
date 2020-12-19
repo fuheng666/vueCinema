@@ -1,0 +1,185 @@
+<template>
+  <ul class="box1"
+     v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0"
+        infinite-scroll-immediate-check='true'
+  >
+    <li v-for="item in list" :key='item.filmId' class="box" @click='goDetail(item.filmId)'>
+      <div class="imgbox">
+         <img :src="item.poster" alt="">
+      </div>
+      <div class="text">
+        <h3>{{item.name}}<span class="filmType">{{item.filmType.name}}</span></h3>
+        <p v-if='!item.grade?false:true'>观众评分<span class="grade">{{item.grade}}</span></p>
+        <p class="actors">
+          <span>主演:</span>
+          <span v-for='(index,val) in item.actors' :key='val'>{{index.name}}</span>
+        </p>
+        <p>{{item.nation}} | {{item.runtime?item.runtime:'未知' | time}}</p>
+      </div>
+      <p class="tickets">购票</p>
+    </li>
+    <div class="big" v-if=iShow></div>
+  </ul>
+</template>
+<script>
+import maizuo from '@/http/maizuo'
+import Vue from 'vue'
+import { Toast } from 'vant'
+import { InfiniteScroll } from 'mint-ui'
+
+Vue.use(InfiniteScroll)
+Vue.use(Toast)
+export default {
+  data () {
+    return {
+      list: [],
+      loading: false,
+      pageNum: 1,
+      total: 0,
+      iShow:false
+    }
+  },
+  created () {
+    Toast.loading({
+      message: '加载中...',
+      forbidClick: true,
+      loadingType: 'spinner',
+      duration: 0
+    })
+    maizuo({
+      url: `https://m.maizuo.com/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=1&k=2715269`,
+      headers: {
+        'X-Host': 'mall.film-ticket.film.list'
+      }
+    }).then((res) => {
+      try {
+        this.total = res.data.data.total
+        this.list = res.data.data.films
+        Toast.clear()
+      } catch (e) {
+        Toast.clear()
+        Toast.fail('加载失败')
+      }
+    })
+  },
+  filters: {
+    time: function (value) {
+      return value = value == '未知' ? '未知' : value + '分钟'
+    }
+  },
+  methods: {
+    goDetail (id) {
+       Toast.loading({
+      message: '加载中...',
+      forbidClick: true,
+      loadingType: 'spinner',
+      duration: 0
+    })
+      this.$router.push(`/film/${id}`)
+    },
+    loadMore () {
+      Toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      })
+
+      this.loading = true
+      this.pageNum++
+      if (this.list.length === this.total && this.list.length !== 0) {
+        Toast.clear()
+        Toast('没有更多了')
+        this.iShow=true
+        return this.loading = false
+      }
+      maizuo({
+        url: `https://m.maizuo.com/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.pageNum}&pageSize=10&type=1&k=2715269`,
+        headers: {
+          'X-Host': 'mall.film-ticket.film.list'
+        }
+      }).then((res) => {
+        this.list = [...this.list, ...res.data.data.films]
+        Toast.clear()
+        this.loading = false
+      })
+    }
+  }
+  /*  beforeRouteEnter(to,from,next) {
+    console.log('我的去向======>',to.path);
+    console.log('我的来源======>',from.path);
+    next()
+  } */
+}
+</script>
+
+<style lang='scss' >
+  .box1{
+    .imgbox{
+      width: .66rem;
+      height: .94rem;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text{
+      line-height: .2rem;
+      margin-left:.09rem;
+      .filmType{
+        font-size: .09rem;
+      color: #fff;
+      background-color: #d2d6dc;
+      height: .14rem;
+      line-height: .14rem;
+      padding: 0 .02rem;
+      border-radius: .02rem;
+      margin-left:.05rem ;
+      }
+     h3,p{
+        width: 2.29rem;
+      }
+      p{
+        font-size:.13rem;
+        color: #797d82;
+        .grade{
+          color: sandybrown;
+        }
+      }
+      .actors{
+           white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+      }
+
+    }
+    .box{
+       padding: 10px;
+       margin-bottom: .1rem;
+       display: flex;
+      position:relative;
+      .tickets{
+        position: absolute;
+        right: 3%;
+        top: 27%;
+        width: .5rem;
+       height: .25rem;
+      text-align: center;
+      line-height: .25rem;
+      color: #ff5f16;
+      font-size:.13rem ;
+      border: 1px solid  #ff5f16;
+      }
+    }
+  }
+  .actors{
+    span{
+      margin-right:.03rem;
+    }
+  }
+  .big{
+    height: .5rem;
+  }
+</style>
