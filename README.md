@@ -1,4 +1,4 @@
-# zidingyi
+仿卖座网站Vue项目
 
 ## Project setup
 ```
@@ -22,3 +22,4 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
