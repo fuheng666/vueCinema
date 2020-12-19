@@ -1,4 +1,4 @@
-仿卖座网站Vue项目
+（仿）卖座网站Vue项目
 
 ## Project setup
 ```
