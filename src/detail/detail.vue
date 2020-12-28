@@ -103,9 +103,8 @@ import navBar from "../components/navBar";
 import Vue from "vue";
 import { ImagePreview, Dialog } from "vant";
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-import { Toast } from "vant";
 
-Vue.use(Toast).use(Dialog);
+Vue.use(Dialog);
 export default {
   components: {
     swiper,
@@ -127,12 +126,6 @@ export default {
     this.updateIsShow(true);
   },
   mounted() {
-    Toast.loading({
-      message: "加载中...",
-      forbidClick: true,
-      loadingType: "spinner",
-      duration: 0,
-    });
     var fildid = this.$route.params.id;
     maizuo({
       url: `/api/gateway?filmId=${fildid}&k=2683148`,
@@ -142,9 +135,7 @@ export default {
         "X-Host": "mall.film-ticket.film.info",
       },
     }).then((res) => {
-      try {
         this.Delist = res.data.data.film;
-        console.log(this.Delist);
         if(!this.Delist.isSale){
           Dialog.confirm({
           message: "该影片没有排期，到首页看其他电影吧",
@@ -156,11 +147,6 @@ export default {
             // on cancel
           });
         }
-        Toast.clear();
-      } catch (e) {
-        Toast.clear();
-        Toast.fail("加载失败");
-      }
     });
   },
   filters: {

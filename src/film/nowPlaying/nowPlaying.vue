@@ -1,12 +1,14 @@
 <template>
   <div class="box11">
-    <ul class="box1"
-     v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-        infinite-scroll-distance="0"
-        infinite-scroll-immediate-check='true'
+    <van-list class="box1"
+      v-model="loading"
+      :finished="finished"
+      finished-text="我是有底线的"
+      @load="onLoad"
+      :immediate-check = false
+      offset='200'
   >
-    <li v-for="item in list" :key='item.filmId' class="box" @click='goDetail(item.filmId)'>
+    <van-cell v-for="item in list" :key='item.filmId' class="box" @click='goDetail(item.filmId)'>
       <div class="imgbox">
          <img :src="item.poster" alt="">
       </div>
@@ -20,19 +22,17 @@
         <p>{{item.nation}} | {{item.runtime?item.runtime:'未知' | time}}</p>
       </div>
       <p class="tickets">购票</p>
-    </li>
-    <div class="big" v-if=iShow></div>
-  </ul>
+    </van-cell>
+  </van-list >
+    <div class="big" v-if=true></div>
   </div>
 </template>
 <script>
 import maizuo from '@/http/maizuo'
 import Vue from 'vue'
-import { Toast } from 'vant'
-import { InfiniteScroll } from 'mint-ui'
+import { List,Cell } from 'vant';
 
-Vue.use(InfiniteScroll)
-Vue.use(Toast)
+Vue.use(List).use(Cell)
 export default {
   data () {
     return {
@@ -40,30 +40,19 @@ export default {
       loading: false,
       pageNum: 1,
       total: 0,
-      iShow:false
+      iShow:false,
+      finished:false
     }
   },
   created () {
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      duration: 0
-    })
     maizuo({
       url: `/api/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=1&k=2715269`,
       headers: {
         'X-Host': 'mall.film-ticket.film.list'
       }
     }).then((res) => {
-      try {
         this.total = res.data.data.total
         this.list = res.data.data.films
-        Toast.clear()
-      } catch (e) {
-        Toast.clear()
-        Toast.fail('加载失败')
-      }
     })
   },
   filters: {
@@ -72,42 +61,27 @@ export default {
     }
   },
   methods: {
-    goDetail (id) {
-       Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      duration: 0
-    })
-      this.$router.push(`/film/${id}`)
-    },
-    loadMore () {
-      Toast.loading({
-        message: '加载中...',
-        forbidClick: true,
-        loadingType: 'spinner',
-        duration: 0
-      })
-
-      this.loading = true
-      this.pageNum++
-      if (this.list.length === this.total && this.list.length !== 0) {
-        Toast.clear()
-        Toast('没有更多了')
-        this.iShow=true
-        return this.loading = false
+    onLoad(){
+      if(this.list.length === this.total){
+        this.finished = true
+        return
       }
-      maizuo({
+      this.pageNum++
+      console.log(this.pageNum)
+       maizuo({
         url: `/api/gateway?cityId=${this.$store.state.cityId}&pageNum=${this.pageNum}&pageSize=10&type=1&k=2715269`,
         headers: {
           'X-Host': 'mall.film-ticket.film.list'
         }
       }).then((res) => {
         this.list = [...this.list, ...res.data.data.films]
-        Toast.clear()
         this.loading = false
       })
-    }
+    },
+    goDetail (id) {
+      this.$router.push(`/film/${id}`)
+    },
+    
   }
  
 }
@@ -118,6 +92,8 @@ export default {
     .imgbox{
       width: .66rem;
       height: .94rem;
+      float: left;
+      margin-right:.1rem ;
       img{
         width: 100%;
         height: 100%;
@@ -127,7 +103,7 @@ export default {
       line-height: .2rem;
       margin-left:.09rem;
       .filmType{
-        font-size: .09rem;
+      font-size: .09rem;
       color: #fff;
       background-color: #d2d6dc;
       height: .14rem;
@@ -137,7 +113,13 @@ export default {
       margin-left:.05rem ;
       }
      h3,p{
-        width: 2.29rem;
+       font-size: .1.7rem;
+       font-weight: 500;
+        width: 2.20rem;
+      }
+      h3{
+        margin-bottom:.1rem ;
+
       }
       p{
         font-size:.13rem;
@@ -154,9 +136,9 @@ export default {
 
     }
     .box{
-
        padding: 10px;
        margin-bottom: .1rem;
+        
        display: flex;
       position:relative;
       .tickets{
@@ -183,5 +165,6 @@ export default {
   }
   .box11{
     padding-top: .5rem;
+   
   }
 </style>

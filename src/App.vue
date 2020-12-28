@@ -9,19 +9,12 @@
 
 <script>
 import TabBar from './components/TabBar'
-import { Toast } from 'vant'
 export default {
   components: {
     TabBar
   },
   beforeUpdate () {
-    // console.log(this.$store)
-     Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      duration: 0
-    })
+    
   },
   data () {
     return {

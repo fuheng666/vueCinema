@@ -6,7 +6,6 @@
           <h3 slot='title'>影城</h3>
       </navBar>
        <div @click="goSeach" class="navbar-search"><van-icon color='#BEBEBE' size='.25rem' name="search" /></div>
- 
     </header>
     <main>
        <div style="height:.4rem"></div>
@@ -42,12 +41,6 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 /* cinema */
 Vue.use(DropdownMenu).use(DropdownItem)
 export default {
-
-  /*   beforeRouteEnter(to,from,next) {
-    // console.log('我的去向======>',to.path);
-    // console.log('我的来源======>',from.path);
-    next()
-  } */
   data () {
     return {
       height:0

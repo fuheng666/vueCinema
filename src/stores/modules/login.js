@@ -1,7 +1,7 @@
 var login = {
   namespaced: true,
   state: {
-    name: ''
+    name: localStorage.getItem("username")
   }
-}
+};
 export default login

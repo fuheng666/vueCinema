@@ -1,5 +1,10 @@
 document.documentElement.style.fontSize =
   document.documentElement.clientWidth / 3.75 + 'px'
-export default {
+window.onresize = function() {
+  document.documentElement.style.fontSize =
+    document.documentElement.clientWidth / 3.75 + "px";
+};
+
+  export default {
 
 }

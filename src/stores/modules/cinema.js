@@ -1,12 +1,8 @@
 import Vue from 'vue'
-import { Icon, Toast, Loading } from 'vant'
-import axios from 'axios'
+import { Icon } from 'vant'
 import BetterScroll from "better-scroll";
-
-
+import http from '../../http/maizuo'
 Vue.use(Icon)
-  .use(Toast)
-  .use(Loading)
 var module = {
   namespaced: true,
   // state
@@ -62,16 +58,12 @@ var module = {
   actions: {
     // cinema
     getCinema (context) {
-      axios({
+      http({
         url: `/api/gateway?cityId=${this.state.cityId}&ticketFlag=1&k=6091309`,
         headers: {
-          "X-Client-Info":
-            '{"a":"3000","ch":"1002","v":"5.0.4","e":"1607068294914046350000129","bc":"370200"}',
           "X-Host": "mall.film-ticket.cinema.list"
         }
       }).then(res => {
-        try {
-          Toast.clear();
           context.commit("updateCinemalist", res.data.data.cinemas);
           var arr = [
             ...new Set(res.data.data.cinemas.map(value => value.districtName))
@@ -87,20 +79,8 @@ var module = {
               }
             });
           });
-        } catch (e) {
-          console.log(e);
-          Toast.clear();
-          Toast.fail("加载失败");
-        }
-      });
 
-      // 自定义加载图标
-      Toast.loading({
-        message: '加载中...',
-        forbidClick: true,
-        loadingType: 'circular',
-        duration: 0
-      })
+      });
     }
   }
 }

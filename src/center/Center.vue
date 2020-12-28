@@ -32,13 +32,14 @@ import { Toast } from 'vant'
 export default {
   data () {
     return {
-      newname: name
+      newname: localStorage.getItem("username")
     }
   },
   computed: {
     ...mapState('loginModule', ['name'])
   },
   beforeMount () {
+      console.log(this.newname);
        Toast.clear()
   }
 }

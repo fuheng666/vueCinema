@@ -1,6 +1,6 @@
 <template>
     <form>
-      <div class='img'><img src='https://assets.maizuo.com/h5/mz-auth/public/app/img/logo.19ca0be.png' alt='图片记载失败'></div>
+      <div class='img'><img src='https://assets.maizuo.com/h5/mz-auth/public/app/img/logo.19ca0be.png' alt='图片加载失败'></div>
       <div><input type="text" v-model="username" placeholder="用户名"></div>
       <div><input type="password" v-model="password" placeholder="密码" autocomplete></div>
       <div><input type="button" value="登录" @click='send'></div>
@@ -47,12 +47,13 @@ export default {
           if (value.data.error == 0) {
             if (value.data.msg.token) {
               localStorage.setItem('token', value.data.msg.token)
+              localStorage.setItem('username', value.data.msg.username)
+
               this.$router.push('/center')
             }
-            name = value.data.msg.username
+            name = localStorage.getItem("username")
             this.data = value.data.msg.msg
             Toast.clear()
-            console.log(name)
           } else {
             Toast.clear()
             Toast.fail(value.data.msg.msg)

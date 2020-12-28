@@ -27,11 +27,9 @@
 <script>
 import maizuo from '@/http/maizuo'
 import Vue from 'vue'
-import { Toast } from 'vant'
 import { InfiniteScroll } from 'mint-ui'
 
-Vue.use(InfiniteScroll)
-Vue.use(Toast)
+
 export default {
   data () {
     return {
@@ -43,26 +41,17 @@ export default {
     }
   },
   created () {
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      duration: 0
-    })
+   
     maizuo({
-      url: `https://m.maizuo.com/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=2&k=4788462`,
+      url: `/api/gateway?cityId=${this.$store.state.cityId}&pageNum=1&pageSize=10&type=2&k=4788462`,
       headers: {
         'X-Host': 'mall.film-ticket.film.list'
       }
     }).then((res) => {
-      try {
+    
         this.total = res.data.data.total
         this.list = res.data.data.films
-        Toast.clear()
-      } catch (e) {
-        Toast.clear()
-        Toast.fail('加载失败')
-      }
+  
     })
   },
   filters: {
@@ -72,12 +61,6 @@ export default {
   },
   methods: {
     goDetail (id) {
-       Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      loadingType: 'spinner',
-      duration: 0
-    })
       this.$router.push(`/film/${id}`)
     },
    
